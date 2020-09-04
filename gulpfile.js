@@ -13,12 +13,20 @@ const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
 const concat = require("gulp-concat");
 const imagemin = require("gulp-imagemin");
+const handlebars = require("gulp-hb");
+const rename = require("gulp-rename");
 const server = require("browser-sync").create();
 
 const paths = {
   html: {
     input: "src/*.html",
     output: "build/",
+  },
+  templates: {
+    assets: "src/assets/**/*.hbs",
+    input: "src/*.hbs",
+    output: "build/",
+    watch: "src/**/*.hbs",
   },
   scripts: {
     input: "src/js/*.js",
@@ -44,7 +52,10 @@ function serve(cb) {
     server: {
       baseDir: "./build",
     },
-    open: false,
+    open: false, // disable open browser each time you run gulp
+    // ui: false, // allows to controls all devices, push sync updates and much more
+    // notify: false, // The small pop-over notifications in the browser are not always needed/wanted
+    // online: false, // if you're working offline, you can reduce start-up time by setting this option to false
   });
   cb();
 }
@@ -53,6 +64,7 @@ function watchFiles() {
   watch(paths.css.input, css);
   watch(paths.scripts.input, series(javascript, reload));
   watch(paths.html.input, series(html, reload));
+  watch(paths.templates.watch, series(templates, reload));
   watch(paths.images.input, series(images));
 }
 
@@ -63,6 +75,23 @@ function clean() {
 function html() {
   return src(paths.html.input)
     .pipe(dest(paths.html.output));
+}
+
+function templates() {
+  return src(paths.templates.input)
+    .pipe(handlebars()
+        .partials(paths.templates.assets)
+    )
+    .pipe(
+      rename(function (path) {
+        return {
+          dirname: path.dirname,
+          basename: path.basename,
+          extname: ".html",
+        };
+      })
+    )
+    .pipe(dest(paths.templates.output));
 }
 
 function css() {
@@ -133,12 +162,13 @@ function copy() {
 const dist = series(clean, parallel(html, javascriptMinify, cssMinify, images, copy));
 const dev = series(
   clean,
-  parallel(html, javascript, css, copy),
+  parallel(templates, javascript, css, copy),
   images,
   serve,
   watchFiles
 );
 
+exports.templates = series(templates, watchFiles);
 exports.images = images;
 exports.dist = dist;
 exports.default = dev;
