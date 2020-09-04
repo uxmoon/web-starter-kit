@@ -5,12 +5,23 @@ Boilerplate mobile first development
 ## Requirements
 
 - [Node.js](https://nodejs.org/en/)
-- [Gulp](https://gulpjs.com/)
+- [Gulp](https://gulpjs.com/) Uses Gulp 4.x.
 
 ## Usage
 
 - Clone repository and run `npm i`
 
+## Folder structure
+```
+|- build/
+|- src/
+  |- js/
+  |- scss/
+|- gulpfile.js
+|- package.json
+|- editorconfig.json
+|- node_modules/
+```
 ## CSS
 
 - Added `postcss`, `sourcemaps`
