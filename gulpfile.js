@@ -168,7 +168,6 @@ const dev = series(
   watchFiles
 );
 
-exports.templates = series(templates, watchFiles);
 exports.images = images;
 exports.dist = dist;
 exports.default = dev;
