@@ -10,6 +10,7 @@ const cssnano = require("cssnano");
 const { sync } = require("del");
 sass.compiler = require("node-sass");
 const babel = require("gulp-babel");
+const uglify = require("gulp-uglify");
 const server = require("browser-sync").create();
 
 const paths = {
@@ -53,8 +54,7 @@ function clean() {
 }
 
 function html() {
-  return src(paths.html.input)
-    .pipe(dest(paths.html.output));
+  return src(paths.html.input).pipe(dest(paths.html.output));
 }
 
 function css() {
@@ -77,5 +77,26 @@ function javascript() {
     .pipe(dest(paths.scripts.output));
 }
 
+function cssMinify() {
+  return src(`${paths.css.output}styles.css`)
+    .pipe(postcss([cssnano()]))
+    .pipe(dest(paths.css.output));
+}
+
+function javascriptMinify() {
+  return src(`${paths.scripts.output}app.js`)
+    .pipe(
+      uglify({
+        compress: {
+          drop_console: true,
+        },
+      })
+    )
+    .pipe(dest(paths.scripts.output));
+}
+
+const minify = series(cssMinify, javascriptMinify);
+const dist = series(clean, parallel(html, javascript, css), minify);
 const dev = series(clean, parallel(html, javascript, css), serve, watchFiles);
 exports.default = dev;
+exports.dist = dist;
