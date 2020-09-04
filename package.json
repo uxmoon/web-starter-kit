@@ -22,7 +22,8 @@
     "gulp": "^4.0.2",
     "gulp-postcss": "^8.0.0",
     "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5"
+    "gulp-sourcemaps": "^2.6.5",
+    "sass-mq": "^5.0.1"
   },
   "browserslist": [
     "defaults",
