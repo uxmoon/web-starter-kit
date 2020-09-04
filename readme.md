@@ -1,6 +1,6 @@
 # Web starter kit
 
-Boilerplate mobile first development
+Small boilerplate kit to build static websites.
 
 ## Requirements
 
@@ -10,8 +10,10 @@ Boilerplate mobile first development
 ## Usage
 
 - Clone repository and run `npm i`
+- Run `gulp`
 
 ## Folder structure
+
 ```
 |- build/
 |- src/
@@ -22,6 +24,7 @@ Boilerplate mobile first development
 |- editorconfig.json
 |- node_modules/
 ```
+
 ## CSS
 
 - Added `postcss`, `sourcemaps`
@@ -31,3 +34,7 @@ Boilerplate mobile first development
 
 - `defaults`: Browserslist’s default browsers (`> 0.5%, last 2 versions, Firefox ESR, not dead`).
 - `Not IE 11`
+
+## Live reload
+
+Live reload with Browser Sync, inject CSS and reload page on HTML or JavaScript changes. Support and test multiple devices at the same time, scroll, click, etc.
