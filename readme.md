@@ -1,3 +1,5 @@
+`Work In Progress`
+
 # Web starter kit
 
 Small boilerplate kit to build static websites using Handlebars, Sass and JavaScript with support for modern syntax.

@@ -7,7 +7,6 @@ const sourcemaps = require("gulp-sourcemaps");
 const postcss = require("gulp-postcss");
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
-const del = require("del");
 sass.compiler = require("node-sass");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
