@@ -6,11 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["gulp", "mobile first", "handlebars", "templating"],
+  "keywords": [
+    "gulp",
+    "mobile first",
+    "handlebars",
+    "templating"
+  ],
   "author": "Martin Luna",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^9.8.6",
+    "browser-sync": "^2.26.12",
     "cssnano": "^4.1.10",
     "del": "^5.1.0",
     "gulp": "^4.0.2",
