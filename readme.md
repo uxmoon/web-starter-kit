@@ -1,6 +1,6 @@
 # Web starter kit
 
-Small boilerplate kit to build static websites.
+Small boilerplate kit to build static websites using Handlebars, Sass and JavaScript with support for modern syntax.
 
 ## Requirements
 
@@ -18,9 +18,13 @@ Small boilerplate kit to build static websites.
 ```
 |- build/
 |- src/
+  |- assets/
+    |- layouts/
+    |- partials/
   |- js/
   |- scss/
-|- node_modules/
+    |- elements/
+    |- settings/
 |- gulpfile.js
 |- package.json
 |- editorconfig.json
