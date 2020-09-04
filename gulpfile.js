@@ -12,6 +12,7 @@ sass.compiler = require("node-sass");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
 const concat = require("gulp-concat");
+const imagemin = require("gulp-imagemin");
 const server = require("browser-sync").create();
 
 const paths = {
@@ -26,6 +27,10 @@ const paths = {
   css: {
     input: "src/scss/**/*.scss",
     output: "build/css/",
+  },
+  images: {
+    input: "src/images/*",
+    output: "build/images/",
   },
 };
 
@@ -48,6 +53,7 @@ function watchFiles() {
   watch(paths.css.input, css);
   watch(paths.scripts.input, series(javascript, reload));
   watch(paths.html.input, series(html, reload));
+  watch(paths.images.input, series(images));
 }
 
 function clean() {
@@ -80,10 +86,25 @@ function javascript() {
     .pipe(dest(paths.scripts.output));
 }
 
+function images() {
+  return src(paths.images.input)
+    .pipe(
+      imagemin([
+        imagemin.gifsicle({ interlaced: true }),
+        imagemin.mozjpeg({ quality: 75, progressive: true }),
+        imagemin.optipng({ optimizationLevel: 5 }),
+        imagemin.svgo({
+          plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
+        }),
+      ])
+    )
+    .pipe(dest(paths.images.output));
+}
+
 function cssMinify() {
   return src(paths.css.input)
-  .pipe(sass().on("error", sass.logError))
-  .pipe(postcss([autoprefixer(), cssnano()]))
+    .pipe(sass().on("error", sass.logError))
+    .pipe(postcss([autoprefixer(), cssnano()]))
     .pipe(dest(paths.css.output));
 }
 
@@ -106,12 +127,18 @@ function javascriptMinify() {
 }
 
 function copy() {
-  return src("src/favicon.png")
-    .pipe(dest("build/"))
+  return src("src/favicon.png").pipe(dest("build/"));
 }
 
-const dist = series(clean, parallel(html, javascriptMinify, cssMinify, copy));
-const dev = series(clean, parallel(html, javascript, css, copy), serve, watchFiles);
+const dist = series(clean, parallel(html, javascriptMinify, cssMinify, images, copy));
+const dev = series(
+  clean,
+  parallel(html, javascript, css, copy),
+  images,
+  serve,
+  watchFiles
+);
 
+exports.images = images;
 exports.dist = dist;
 exports.default = dev;
