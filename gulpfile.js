@@ -11,6 +11,21 @@ const { sync } = require("del");
 sass.compiler = require("node-sass");
 const server = require("browser-sync").create();
 
+const paths = {
+  html: {
+    input: "src/*.html",
+    output: "build/"
+  },
+  scripts: {
+    input: "src/js/*.js",
+    output: "build/js/"
+  },
+  css: {
+    input: "src/scss/**/*.scss",
+    output: "build/css/"
+  },
+}
+
 function reload(cb) {
   server.reload();
   cb();
@@ -21,39 +36,39 @@ function serve(cb) {
     server: {
       baseDir: "./build",
     },
+    open: false
   });
   cb();
 }
 
 function watchFiles() {
-  watch("src/scss/**/*.scss", css);
-  watch("src/js/*.js", series(javascript, reload));
-  watch("src/*.html", series(html, reload));
+  watch(paths.css.input, css);
+  watch(paths.scripts.input, series(javascript, reload));
+  watch(paths.html.input, series(html, reload));
 }
 
-function clean(cb) {
-  del.sync("build/");
-  cb();
+function clean() {
+  return del("build/");
 }
 
 function html() {
-  return src("src/*.html").pipe(dest("build/"));
+  return src(paths.html.input).pipe(dest(paths.html.output));
 }
 
 function css() {
-  return src("src/scss/**/*.scss")
+  return src(paths.css.input)
     .pipe(sourcemaps.init())
     .pipe(postcss([autoprefixer()]))
     .pipe(sass().on("error", sass.logError))
     .pipe(sourcemaps.write("."))
-    .pipe(dest("build/css/"))
+    .pipe(dest(paths.css.output))
     .pipe(server.stream());
 }
 
 function javascript() {
-  return src("src/js/*.js")
-    .pipe(dest("build/js/"));
+  return src(paths.scripts.input)
+    .pipe(dest(paths.scripts.output));
 }
 
-const dev = series(clean, html, javascript, css, serve, watchFiles);
+const dev = series(clean, parallel(html, javascript, css), serve, watchFiles);
 exports.default = dev;

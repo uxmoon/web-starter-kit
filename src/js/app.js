@@ -1,3 +1,3 @@
 "use strict";
 
-console.log("app");
+console.log("app running...");
