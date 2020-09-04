@@ -27,6 +27,7 @@ Small boilerplate kit to build static websites.
 
 ## CSS
 
+- Files and folder structure based on [inuitcss](https://github.com/inuitcss/inuitcss)
 - Added `postcss`, `sourcemaps`
 - postcss plugins: `autoprefixer`, `cssnano`
 
@@ -38,3 +39,9 @@ Small boilerplate kit to build static websites.
 ## Live reload
 
 Live reload with Browser Sync, inject CSS and reload page on HTML or JavaScript changes. Support and test multiple devices at the same time, scroll, click, etc.
+
+## EditorConfig
+
+[EditorConfig](https://editorconfig.org/) helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs.
+
+Install the plugin for your editor: [View list](https://editorconfig.org/#download)
