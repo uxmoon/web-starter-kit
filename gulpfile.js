@@ -7,25 +7,47 @@ const sourcemaps = require("gulp-sourcemaps");
 const postcss = require("gulp-postcss");
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
+const { sync } = require("del");
 sass.compiler = require("node-sass");
+const server = require("browser-sync").create();
+
+function reload(cb) {
+  server.reload();
+  cb();
+}
+
+function serve(cb) {
+  server.init({
+    server: {
+      baseDir: "./build",
+    },
+  });
+  cb();
+}
+
+function watchFiles() {
+  watch("src/scss/**/*.scss", css);
+  watch("src/js/*.js", series(javascript, reload));
+  watch("src/*.html", series(html, reload));
+}
 
 function clean(cb) {
-  del.sync('build/');
+  del.sync("build/");
   cb();
 }
 
 function html() {
-  return src("src/*.html")
-    .pipe(dest("build/"));
+  return src("src/*.html").pipe(dest("build/"));
 }
 
 function css() {
   return src("src/scss/**/*.scss")
     .pipe(sourcemaps.init())
-    .pipe(postcss([ autoprefixer() ]))
+    .pipe(postcss([autoprefixer()]))
     .pipe(sass().on("error", sass.logError))
     .pipe(sourcemaps.write("."))
-    .pipe(dest("build/css/"));
+    .pipe(dest("build/css/"))
+    .pipe(server.stream());
 }
 
 function javascript() {
@@ -33,7 +55,5 @@ function javascript() {
     .pipe(dest("build/js/"));
 }
 
-exports.html = html;
-exports.css = css;
-exports.javascript = javascript;
-exports.default = series(clean, parallel(html, css, javascript));
+const dev = series(clean, html, javascript, css, serve, watchFiles);
+exports.default = dev;
