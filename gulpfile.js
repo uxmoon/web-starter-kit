@@ -11,6 +11,7 @@ const { sync } = require("del");
 sass.compiler = require("node-sass");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
+const concat = require("gulp-concat");
 const server = require("browser-sync").create();
 
 const paths = {
@@ -54,14 +55,15 @@ function clean() {
 }
 
 function html() {
-  return src(paths.html.input).pipe(dest(paths.html.output));
+  return src(paths.html.input)
+    .pipe(dest(paths.html.output));
 }
 
 function css() {
   return src(paths.css.input)
     .pipe(sourcemaps.init())
-    .pipe(postcss([autoprefixer()]))
     .pipe(sass().on("error", sass.logError))
+    .pipe(postcss([autoprefixer()]))
     .pipe(sourcemaps.write("."))
     .pipe(dest(paths.css.output))
     .pipe(server.stream());
@@ -74,17 +76,24 @@ function javascript() {
         presets: ["@babel/env"],
       })
     )
+    .pipe(concat("app.js"))
     .pipe(dest(paths.scripts.output));
 }
 
 function cssMinify() {
-  return src(`${paths.css.output}styles.css`)
-    .pipe(postcss([cssnano()]))
+  return src(paths.css.input)
+  .pipe(sass().on("error", sass.logError))
+  .pipe(postcss([autoprefixer(), cssnano()]))
     .pipe(dest(paths.css.output));
 }
 
 function javascriptMinify() {
-  return src(`${paths.scripts.output}app.js`)
+  return src(paths.scripts.input)
+    .pipe(
+      babel({
+        presets: ["@babel/env"],
+      })
+    )
     .pipe(
       uglify({
         compress: {
@@ -92,11 +101,17 @@ function javascriptMinify() {
         },
       })
     )
+    .pipe(concat("app.min.js"))
     .pipe(dest(paths.scripts.output));
 }
 
-const minify = series(cssMinify, javascriptMinify);
-const dist = series(clean, parallel(html, javascript, css), minify);
-const dev = series(clean, parallel(html, javascript, css), serve, watchFiles);
-exports.default = dev;
+function copy() {
+  return src("src/favicon.png")
+    .pipe(dest("build/"))
+}
+
+const dist = series(clean, parallel(html, javascriptMinify, cssMinify, copy));
+const dev = series(clean, parallel(html, javascript, css, copy), serve, watchFiles);
+
 exports.dist = dist;
+exports.default = dev;
