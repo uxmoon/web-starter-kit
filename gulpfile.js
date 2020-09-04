@@ -3,6 +3,10 @@
 const { series, parallel, src, dest, watch } = require("gulp");
 const del = require("del");
 const sass = require("gulp-sass");
+const sourcemaps = require("gulp-sourcemaps");
+const postcss = require("gulp-postcss");
+const autoprefixer = require("autoprefixer");
+const cssnano = require("cssnano");
 sass.compiler = require("node-sass");
 
 function clean(cb) {
@@ -17,8 +21,11 @@ function html() {
 
 function css() {
   return src("src/scss/**/*.scss")
-    .pipe(sass().on('error', sass.logError))
-    .pipe(dest("build/css/"))
+    .pipe(sourcemaps.init())
+    .pipe(postcss([ autoprefixer() ]))
+    .pipe(sass().on("error", sass.logError))
+    .pipe(sourcemaps.write("."))
+    .pipe(dest("build/css/"));
 }
 
 function javascript() {
