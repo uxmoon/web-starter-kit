@@ -9,22 +9,23 @@ const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
 const { sync } = require("del");
 sass.compiler = require("node-sass");
+const babel = require("gulp-babel");
 const server = require("browser-sync").create();
 
 const paths = {
   html: {
     input: "src/*.html",
-    output: "build/"
+    output: "build/",
   },
   scripts: {
     input: "src/js/*.js",
-    output: "build/js/"
+    output: "build/js/",
   },
   css: {
     input: "src/scss/**/*.scss",
-    output: "build/css/"
+    output: "build/css/",
   },
-}
+};
 
 function reload(cb) {
   server.reload();
@@ -36,7 +37,7 @@ function serve(cb) {
     server: {
       baseDir: "./build",
     },
-    open: false
+    open: false,
   });
   cb();
 }
@@ -52,7 +53,8 @@ function clean() {
 }
 
 function html() {
-  return src(paths.html.input).pipe(dest(paths.html.output));
+  return src(paths.html.input)
+    .pipe(dest(paths.html.output));
 }
 
 function css() {
@@ -67,6 +69,11 @@ function css() {
 
 function javascript() {
   return src(paths.scripts.input)
+    .pipe(
+      babel({
+        presets: ["@babel/env"],
+      })
+    )
     .pipe(dest(paths.scripts.output));
 }
 

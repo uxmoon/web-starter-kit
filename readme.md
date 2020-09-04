@@ -30,6 +30,12 @@ Small boilerplate kit to build static websites.
 - Files and folder structure based on [inuitcss](https://github.com/inuitcss/inuitcss)
 - Added `postcss`, `sourcemaps`
 - postcss plugins: `autoprefixer`, `cssnano`
+- `sass-mq` to handle [media queries](https://github.com/sass-mq/sass-mq)
+-
+
+## JavaScript
+
+- Added `gulp-babel` to transpile ES6 modern syntax
 
 ## Browser support
 
