@@ -31,7 +31,6 @@ Small boilerplate kit to build static websites.
 - Added `postcss`, `sourcemaps`
 - postcss plugins: `autoprefixer`, `cssnano`
 - `sass-mq` to handle [media queries](https://github.com/sass-mq/sass-mq)
--
 
 ## JavaScript
 
