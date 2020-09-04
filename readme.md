@@ -10,7 +10,8 @@ Small boilerplate kit to build static websites.
 ## Usage
 
 - Clone repository and run `npm i`
-- Run `gulp`
+- Run `gulp` for development
+- Run `gulp dist` to bundle and minify css and js files
 
 ## Folder structure
 
@@ -19,10 +20,11 @@ Small boilerplate kit to build static websites.
 |- src/
   |- js/
   |- scss/
+|- node_modules/
 |- gulpfile.js
 |- package.json
 |- editorconfig.json
-|- node_modules/
+|- readme.md
 ```
 
 ## CSS
@@ -34,7 +36,8 @@ Small boilerplate kit to build static websites.
 
 ## JavaScript
 
-- Added `gulp-babel` to transpile ES6 modern syntax
+- Use `gulp-babel` to transpile ES6 modern syntax
+- Minify with `gulp-uglify`
 
 ## Browser support
 
