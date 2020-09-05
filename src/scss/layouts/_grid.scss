@@ -1,0 +1,35 @@
+.columns {
+  margin-bottom: calc(1.5rem - .75rem);
+  margin-left: -.75rem;
+  margin-right: -.75rem;
+  margin-top: -.75rem;
+
+  @include mq($from: tablet) {
+    display: flex;
+  }
+}
+
+.column {
+  display: block;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: .75rem;
+}
+
+.column.is-half {
+  @include mq($from: tablet) {
+    flex: none;
+    width: 50%;
+  }
+}
+
+.item {
+  background-color: #00d1b2;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 1.25rem 0;
+  position: relative;
+  text-align: center;
+}

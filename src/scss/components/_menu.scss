@@ -1,0 +1,16 @@
+.menu {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+
+  @include mq($from: tablet) {
+    display: flex;
+  }
+}
+
+.menu-item {
+  @include mq($from: tablet) {
+    margin-right: .75rem;
+  }
+}
