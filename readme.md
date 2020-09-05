@@ -23,6 +23,7 @@ Small boilerplate kit to build static websites using Handlebars, Sass and JavaSc
   |- assets/
     |- layouts/
     |- partials/
+  |- images/
   |- js/
   |- scss/
     |- elements/
@@ -33,8 +34,14 @@ Small boilerplate kit to build static websites using Handlebars, Sass and JavaSc
 |- readme.md
 ```
 
+## HTML
+
+Use [handlebars](https://handlebarsjs.com/) to build page using a templating engine.
+- Partials and layouts files are stored in `assets` folder.
+
 ## CSS
 
+- Use `sass` preprocessor
 - Files and folder structure based on [inuitcss](https://github.com/inuitcss/inuitcss)
 - Added `postcss`, `sourcemaps`
 - postcss plugins: `autoprefixer`, `cssnano`
@@ -45,6 +52,12 @@ Small boilerplate kit to build static websites using Handlebars, Sass and JavaSc
 - Use `gulp-babel` to transpile ES6 modern syntax
 - Minify with `gulp-uglify`
 
+## Images
+
+Minify images seamlessly with [imagemin](https://www.npmjs.com/package/imagemin).
+
+- Images must be placed in `src/images` folder.
+
 ## Browser support
 
 - `defaults`: Browserslist’s default browsers (`> 0.5%, last 2 versions, Firefox ESR, not dead`).
@@ -52,7 +65,7 @@ Small boilerplate kit to build static websites using Handlebars, Sass and JavaSc
 
 ## Live reload
 
-Live reload with Browser Sync, inject CSS and reload page on HTML or JavaScript changes. Support and test multiple devices at the same time, scroll, click, etc.
+Live reload with [Browser Sync](https://github.com/Browsersync/browser-sync), inject CSS and reload page on HTML or JavaScript changes. Support and test multiple devices at the same time, scroll, click, etc.
 
 ## EditorConfig
 
